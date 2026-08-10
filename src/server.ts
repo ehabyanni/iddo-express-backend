@@ -147,6 +147,10 @@ app.get(
   },
 );
 
+// ----------------------------------------------------
+// HERO SECTION ENDPOINTS
+// ----------------------------------------------------
+
 // 5. Get All Images accordion List
 app.get(
   "/api/hero_images",
@@ -170,7 +174,11 @@ app.get(
   },
 );
 
-// 5. Get All Partners List
+// ----------------------------------------------------
+// PARTNERS ENDPOINTS
+// ----------------------------------------------------
+
+// 6. Get All Partners List
 app.get(
   "/api/partners",
   async (req: Request, res: Response<ApiResponse<FormattedPartners[]>>) => {
@@ -193,6 +201,8 @@ app.get(
   },
 );
 
-app.listen(PORT, () => {
-  console.log(`🚀 Iddo Backend is running on http://localhost:${PORT}`);
-});
+// app.listen(PORT, () => {
+//   console.log(`🚀 Iddo Backend is running on http://localhost:${PORT}`);
+// });
+
+export default app;
