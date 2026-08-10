@@ -10,11 +10,12 @@ import {
 import { formatNews, FormattedNews } from "./types/news.js";
 import { formatImages, FormattedImages } from "./types/imageAccordion.js";
 import { formatPartners, FormattedPartners } from "./types/partners.js";
+import helmet from "helmet";
 
 dotenv.config();
 
 const app = express();
-const PORT = process.env.PORT || 5000;
+app.use(helmet());
 
 app.use(cors({
   origin: ['http://localhost:3000', 'https://iddo-delta.vercel.app'],
@@ -204,8 +205,8 @@ app.get(
   },
 );
 
-// app.listen(PORT, () => {
-//   console.log(`🚀 Iddo Backend is running on http://localhost:${PORT}`);
-// });
+app.listen(5000, () => {
+  console.log(`🚀 Iddo Backend is running on http://localhost:${5000}`);
+});
 
-export default app;
+// export default app;
