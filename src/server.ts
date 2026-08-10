@@ -11,12 +11,14 @@ import { formatNews, FormattedNews } from "./types/news.js";
 import { formatImages, FormattedImages } from "./types/imageAccordion.js";
 import { formatPartners, FormattedPartners } from "./types/partners.js";
 import helmet from "helmet";
+import { securityHeadersMiddleware } from "./middlewares/securityMiddleware.js";
 
 dotenv.config();
 
 const app = express();
 app.use(helmet());
-
+// Permissions-Policy Header
+app.use(securityHeadersMiddleware);
 app.use(cors({
   origin: ['http://localhost:3000', 'https://iddo-delta.vercel.app'],
   credentials: true
