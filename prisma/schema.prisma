@@ -8,7 +8,7 @@ datasource db {
   directUrl = env("DIRECT_URL")
 }
 
-model Project {
+model Projects {
   id        Int      @id @default(autoincrement())
   titleEn   String
   titleAr   String
@@ -39,7 +39,7 @@ model ImageAccordion {
   updatedAt     DateTime @updatedAt
 }
 
-model Partner {
+model Partners {
     id            Int      @id @default(autoincrement())
     name          String
     logo          String
