@@ -35,7 +35,6 @@ model ImageAccordion {
   id            Int      @id @default(autoincrement())
   url           String
   title         String
-  description   String
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
 }
