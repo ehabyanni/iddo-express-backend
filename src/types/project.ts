@@ -1,4 +1,4 @@
-import { Project as PrismaProject } from '@prisma/client';
+import { Projects as PrismaProject } from '@prisma/client';
 
 // الـ Response Structure للمشروع الواحد اللي راجع للـ Frontend
 export interface FormattedProject {

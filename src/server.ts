@@ -31,7 +31,7 @@ app.get(
   "/api/projects",
   async (req: Request, res: Response<ApiResponse<FormattedProject[]>>) => {
     try {
-      const projects = await prisma.project.findMany({
+      const projects = await prisma.projects.findMany({
         orderBy: { createdAt: "desc" },
       });
 
@@ -64,7 +64,7 @@ app.get(
         });
       }
 
-      const project = await prisma.project.findUnique({
+      const project = await prisma.projects.findUnique({
         where: { slug },
       });
 
@@ -186,7 +186,7 @@ app.get(
   "/api/partners",
   async (req: Request, res: Response<ApiResponse<FormattedPartners[]>>) => {
     try {
-      const partnersList = await prisma.partner.findMany({
+      const partnersList = await prisma.partners.findMany({
         orderBy: { createdAt: "desc" },
       });
 

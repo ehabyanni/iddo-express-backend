@@ -1,4 +1,4 @@
-import { Partner as PrismaPartner } from '@prisma/client';
+import { Partners as PrismaPartner } from '@prisma/client';
 
 export interface FormattedPartners {
   id: number;
