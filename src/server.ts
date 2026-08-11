@@ -7,6 +7,7 @@ import projectsRouter from "./routes/projects.route.js";
 import newsRouter from "./routes/news.route.js";
 import heroImagesRouter from "./routes/hero_images.route.js";
 import partnersRouter from "./routes/partners.route.js";
+import contactRouter from "./routes/contact.route.js";
 
 dotenv.config();
 
@@ -25,6 +26,7 @@ app.use("/api/projects", projectsRouter);
 app.use("/api/news", newsRouter);
 app.use("/api/hero_images", heroImagesRouter);
 app.use("/api/partners", partnersRouter);
+app.use("/api/contact", contactRouter);
 
 // app.listen(5000, () => {
 //   console.log(`🚀 Iddo Backend is running on http://localhost:${5000}`);

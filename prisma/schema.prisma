@@ -46,3 +46,11 @@ model Partners {
     createdAt     DateTime @default(now())
     updatedAt     DateTime @updatedAt
 }
+
+model ContactMessage {
+  id        String   @id @default(uuid())
+  name      String
+  email     String
+  message   String
+  createdAt DateTime @default(now())
+}
