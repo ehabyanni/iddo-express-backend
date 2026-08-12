@@ -14,6 +14,10 @@ export interface FormattedNews {
     en: string;
     ar: string;
   };
+  content: {
+    en: string;
+    ar: string;
+  };
   published_at: string;
   image: string;
   slug: string;
@@ -36,6 +40,14 @@ export const formatNews = (news: NewsWithTranslations): FormattedNews => {
     {} as Record<string, string>,
   );
 
+  const contentMap = news.translations.reduce(
+    (acc, t) => {
+      acc[t.locale] = t.content || "";
+      return acc;
+    },
+    {} as Record<string, string>,
+  );
+
   return {
     id: news.id,
     title: {
@@ -45,6 +57,10 @@ export const formatNews = (news: NewsWithTranslations): FormattedNews => {
     description: {
       en: descMap.en || "",
       ar: descMap.ar || "",
+    },
+    content: {
+      en: contentMap.en || "",
+      ar: contentMap.ar || "",
     },
     published_at: news.createdAt.toISOString(),
     image: news.image,
