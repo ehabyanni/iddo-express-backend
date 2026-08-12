@@ -30,14 +30,23 @@ model ProjectTranslation {
 
 model News {
   id        Int      @id @default(autoincrement())
-  titleEn   String
-  titleAr   String
-  descEn    String
-  descAr    String
   image     String
   slug      String   @unique
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  translations NewsTranslation[]
+}
+
+model NewsTranslation {
+  id        Int      @id @default(autoincrement())
+  newsId    Int
+  locale    String   // 'en' | 'ar' | 'fr'
+  title     String
+  desc      String
+
+  news   News @relation(fields: [newsId], references: [id], onDelete: Cascade)
+
+  @@unique([newsId, locale])
 }
 
 

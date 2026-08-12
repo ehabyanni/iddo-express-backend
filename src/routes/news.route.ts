@@ -10,6 +10,9 @@ router.get(
   async (req: Request, res: Response<ApiResponse<FormattedNews[]>>) => {
     try {
       const news = await prisma.news.findMany({
+        include: {
+          translations: true,
+        },
         orderBy: { createdAt: "desc" },
       });
 
@@ -43,6 +46,9 @@ router.get(
       }
 
       const newsItem = await prisma.news.findUnique({
+        include: {
+          translations: true,
+        },
         where: { slug },
       });
 
