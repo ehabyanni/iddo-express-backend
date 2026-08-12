@@ -11,6 +11,9 @@ router.get(
   async (req: Request, res: Response<ApiResponse<FormattedProject[]>>) => {
     try {
       const projects = await prisma.projects.findMany({
+        include: {
+          translations: true, // <--- هامة جداً عشان يجيب الترجمات للثلاث لغات
+        },
         orderBy: { createdAt: "desc" },
       });
 
@@ -24,7 +27,7 @@ router.get(
       console.error("Error fetching projects:", error);
       res.status(500).json({ success: false, message: "Server error" });
     }
-  }
+  },
 );
 
 // Get Single Project by Slug
@@ -42,6 +45,9 @@ router.get(
       }
 
       const project = await prisma.projects.findUnique({
+        include: {
+          translations: true,
+        },
         where: { slug },
       });
 
@@ -60,7 +66,7 @@ router.get(
       console.error("Error fetching project:", error);
       res.status(500).json({ success: false, message: "Server error" });
     }
-  }
+  },
 );
 
 export default router;
