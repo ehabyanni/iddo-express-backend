@@ -9,13 +9,23 @@ datasource db {
 }
 
 model Projects {
+  id           Int                  @id @default(autoincrement())
+  image        String
+  slug         String               @unique
+  createdAt    DateTime             @default(now())
+  updatedAt    DateTime             @updatedAt
+  translations ProjectTranslation[]
+}
+
+model ProjectTranslation {
   id        Int      @id @default(autoincrement())
-  titleEn   String
-  titleAr   String
-  image     String
-  slug      String   @unique
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  projectId Int
+  locale    String   // 'en' | 'ar' | 'fr'
+  title     String
+
+  project   Projects @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  @@unique([projectId, locale])
 }
 
 model News {
