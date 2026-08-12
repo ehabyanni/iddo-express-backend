@@ -28,7 +28,7 @@ export interface FormattedProject {
 export const formatProject = (project: ProjectWithTranslations): FormattedProject => {
   // بنجمع الترجمات في كائن يسهل الوصول ليه باللغة
   const titleMap = project.translations.reduce((acc, t) => {
-    acc[t.locale] = t.title;
+    acc[t.locale] = t.title || '';
     return acc;
   }, {} as Record<string, string>);
 
