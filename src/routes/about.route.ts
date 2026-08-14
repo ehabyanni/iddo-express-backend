@@ -18,13 +18,13 @@ router.get(
 
       const formattedItems = items.map(formatAboutItem);
 
-      res.status(200).json({
+      return res.status(200).json({
         success: true,
         data: formattedItems,
       });
     } catch (error) {
-      console.error("Error fetching about section:", error);
-      res.status(500).json({ success: false, message: "Server error" });
+      // console.error("Error fetching about section:", error);
+      return res.status(500).json({ success: false, message: "Server error" });
     }
   },
 );

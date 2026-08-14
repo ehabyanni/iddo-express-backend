@@ -8,6 +8,17 @@ datasource db {
   directUrl = env("DIRECT_URL")
 }
 
+model Language {
+  code      String   @id // "ar", "en", "fr" (بمثابة id)
+  name      String   // "Arabic", "English", "French"
+  createdAt DateTime @default(now())
+
+  // العلاقات مع جداول الترجمات
+  aboutTranslations   AboutItemTranslation[]
+  newsTranslations    NewsTranslation[]
+  projectTranslations ProjectTranslation[]
+}
+
 model Projects {
   id           Int                  @id @default(autoincrement())
   image        String
@@ -20,12 +31,13 @@ model Projects {
 model ProjectTranslation {
   id        Int      @id @default(autoincrement())
   projectId Int
-  locale    String   // 'en' | 'ar' | 'fr'
+  locale    String
   title     String
   desc      String
   content   String
 
   project   Projects @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  language  Language @relation(fields: [locale], references: [code], onDelete: Cascade)
 
   @@unique([projectId, locale])
 }
@@ -42,12 +54,13 @@ model News {
 model NewsTranslation {
   id        Int      @id @default(autoincrement())
   newsId    Int
-  locale    String   // 'en' | 'ar' | 'fr'
+  locale    String
   title     String
   desc      String
   content   String
 
   news   News @relation(fields: [newsId], references: [id], onDelete: Cascade)
+  language  Language @relation(fields: [locale], references: [code], onDelete: Cascade)
 
   @@unique([newsId, locale])
 }
@@ -94,9 +107,11 @@ model AboutItem {
 model AboutItemTranslation {
   id          Int       @id @default(autoincrement())
   aboutItemId Int
-  locale      String    // "ar", "en"
+  locale      String
   content     String    @db.Text
+
   aboutItem   AboutItem @relation(fields: [aboutItemId], references: [id], onDelete: Cascade)
+  language  Language @relation(fields: [locale], references: [code], onDelete: Cascade)
 
   @@unique([aboutItemId, locale])
 }

@@ -16,13 +16,13 @@ router.get(
       // Formation of data to match Frontend ProjectItem type
       const formattedImages = images.map(formatImages);
 
-      res.status(200).json({
+      return res.status(200).json({
         success: true,
         data: formattedImages,
       });
     } catch (error) {
-      console.error("Error fetching images:", error);
-      res.status(500).json({ success: false, message: "Server error" });
+      // console.error("Error fetching images:", error);
+      return res.status(500).json({ success: false, message: "Server error" });
     }
   },
 );
