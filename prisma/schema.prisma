@@ -76,3 +76,27 @@ model ContactMessage {
   message   String
   createdAt DateTime @default(now())
 }
+
+enum AboutType {
+  WHO_WE_ARE
+  MISSION
+  VISION
+}
+
+model AboutItem {
+  id           Int                    @id @default(autoincrement())
+  key          AboutType              @unique
+  createdAt    DateTime               @default(now())
+  updatedAt    DateTime               @updatedAt
+  translations AboutItemTranslation[]
+}
+
+model AboutItemTranslation {
+  id          Int       @id @default(autoincrement())
+  aboutItemId Int
+  locale      String    // "ar", "en"
+  content     String    @db.Text
+  aboutItem   AboutItem @relation(fields: [aboutItemId], references: [id], onDelete: Cascade)
+
+  @@unique([aboutItemId, locale])
+}
