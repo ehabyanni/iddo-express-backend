@@ -8,54 +8,30 @@ export type ProjectWithTranslations = PrismaProject & {
 // 2. الشكل النهائي (Formatted) اللي هيبعت للفرونت إند بالـ 3 لغات
 export interface FormattedProject {
   id: number;
-  title: {
-    en: string;
-    ar: string;
-  };
-  desc: {
-    en: string;
-    ar: string;
-  };
-  content: {
-    en: string;
-    ar: string;
-  };
+    title: Record<string, string>;
+  desc: Record<string, string>;
+  content: Record<string, string>;
   image: string;
   slug: string;
 }
 
 // 3. دالة التحويل (Formatter)
 export const formatProject = (project: ProjectWithTranslations): FormattedProject => {
-  // بنجمع الترجمات في كائن يسهل الوصول ليه باللغة
-  const titleMap = project.translations.reduce((acc, t) => {
-    acc[t.locale] = t.title || '';
-    return acc;
-  }, {} as Record<string, string>);
+  const title: Record<string, string> = {};
+  const desc: Record<string, string> = {};
+  const content: Record<string, string> = {};
 
-  const descMap = project.translations.reduce((acc, t) => {
-    acc[t.locale] = t.desc || '';
-    return acc;
-  }, {} as Record<string, string>);
-
-  const contentMap = project.translations.reduce((acc, t) => {
-    acc[t.locale] = t.content || '';
-    return acc;
-  }, {} as Record<string, string>);
+  project.translations.forEach((t) => {
+    title[t.locale] = t.title;
+    desc[t.locale] = t.desc;
+    content[t.locale] = t.content || "";
+  });
 
   return {
     id: project.id,
-    title: {
-      en: titleMap.en || '',
-      ar: titleMap.ar || '',
-    },
-    desc: {
-      en: descMap.en || '',
-      ar: descMap.ar || '',
-    },
-    content: {
-      en: contentMap.en || '',
-      ar: contentMap.ar || '',
-    },
+    title,
+    desc,
+    content,
     image: project.image,
     slug: project.slug,
   };

@@ -4,6 +4,7 @@ import { ApiResponse } from "../types/common.js";
 import { formatNews, FormattedNews } from "../types/news.js";
 
 const router = Router();
+
 // Get All News
 router.get(
   "/",
@@ -19,13 +20,13 @@ router.get(
       // Formation of data to match Frontend ProjectItem type
       const formattedNewsList = news.map(formatNews);
 
-      res.status(200).json({
+      return res.status(200).json({
         success: true,
         data: formattedNewsList,
       });
     } catch (error) {
-      console.error("Error fetching news:", error);
-      res.status(500).json({ success: false, message: "Server error" });
+      // console.error("Error fetching news:", error);
+      return res.status(500).json({ success: false, message: "Server error" });
     }
   },
 );
@@ -38,7 +39,7 @@ router.get(
       const { slug } = req.params;
 
       // تأكد إن الـ slug موجود وهو عباره عن string
-      if (typeof slug !== "string") {
+      if (!slug || typeof slug !== "string") {
         return res.status(400).json({
           success: false,
           message: "Invalid slug parameter",
@@ -46,10 +47,10 @@ router.get(
       }
 
       const newsItem = await prisma.news.findUnique({
+        where: { slug },
         include: {
           translations: true,
         },
-        where: { slug },
       });
 
       if (!newsItem) {
@@ -59,13 +60,13 @@ router.get(
         });
       }
 
-      res.status(200).json({
+      return res.status(200).json({
         success: true,
         data: formatNews(newsItem),
       });
     } catch (error) {
-      console.error("Error fetching news:", error);
-      res.status(500).json({ success: false, message: "Server error" });
+      // console.error("Error fetching news item:", error);
+      return res.status(500).json({ success: false, message: "Server error" });
     }
   },
 );

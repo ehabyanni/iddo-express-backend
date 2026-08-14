@@ -6,62 +6,31 @@ export type NewsWithTranslations = PrismaNews & {
 
 export interface FormattedNews {
   id: number;
-  title: {
-    en: string;
-    ar: string;
-  };
-  description: {
-    en: string;
-    ar: string;
-  };
-  content: {
-    en: string;
-    ar: string;
-  };
+  title: Record<string, string>;
+  description: Record<string, string>;
+  content: Record<string, string>;
   published_at: string;
   image: string;
   slug: string;
 }
 
 export const formatNews = (news: NewsWithTranslations): FormattedNews => {
-  const titleMap = news.translations.reduce(
-    (acc, t) => {
-      acc[t.locale] = t.title;
-      return acc;
-    },
-    {} as Record<string, string>,
-  );
+  const title: Record<string, string> = {};
+  const description: Record<string, string> = {};
+  const content: Record<string, string> = {};
 
-  const descMap = news.translations.reduce(
-    (acc, t) => {
-      acc[t.locale] = t.desc;
-      return acc;
-    },
-    {} as Record<string, string>,
-  );
-
-  const contentMap = news.translations.reduce(
-    (acc, t) => {
-      acc[t.locale] = t.content || "";
-      return acc;
-    },
-    {} as Record<string, string>,
-  );
+  // تجميع كل اللغات المتاحة في الداتابيز ديناميكياً بدون فرض أي لغة
+  news.translations.forEach((t) => {
+    title[t.locale] = t.title;
+    description[t.locale] = t.desc;
+    content[t.locale] = t.content || "";
+  });
 
   return {
     id: news.id,
-    title: {
-      en: titleMap.en || "",
-      ar: titleMap.ar || "",
-    },
-    description: {
-      en: descMap.en || "",
-      ar: descMap.ar || "",
-    },
-    content: {
-      en: contentMap.en || "",
-      ar: contentMap.ar || "",
-    },
+    title,
+    description,
+    content,
     published_at: news.createdAt.toISOString(),
     image: news.image,
     slug: news.slug,

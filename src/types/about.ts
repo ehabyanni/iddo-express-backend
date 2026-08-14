@@ -1,4 +1,8 @@
-import { AboutItem as PrismaAboutItem, AboutItemTranslation, AboutType } from "@prisma/client";
+import {
+  AboutItem as PrismaAboutItem,
+  AboutItemTranslation,
+  AboutType,
+} from "@prisma/client";
 
 export type AboutItemWithTranslations = PrismaAboutItem & {
   translations: AboutItemTranslation[];
@@ -7,26 +11,21 @@ export type AboutItemWithTranslations = PrismaAboutItem & {
 export interface FormattedAboutItem {
   id: number;
   key: AboutType;
-  content: {
-    en: string;
-    ar: string;
-  };
+  content: Record<string, string>;
 }
 
-export const formatAboutItem = (item: AboutItemWithTranslations): FormattedAboutItem => {
-  const translations = item.translations || [];
+export const formatAboutItem = (
+  item: AboutItemWithTranslations,
+): FormattedAboutItem => {
+  const content: Record<string, string> = {};
 
-  const contentMap = translations.reduce((acc, t) => {
-    acc[t.locale] = t.content || "";
-    return acc;
-  }, {} as Record<string, string>);
+  item.translations.forEach((t) => {
+    content[t.locale] = t.content || "";
+  });
 
   return {
     id: item.id,
     key: item.key,
-    content: {
-      en: contentMap.en || "",
-      ar: contentMap.ar || "",
-    },
+    content,
   };
 };

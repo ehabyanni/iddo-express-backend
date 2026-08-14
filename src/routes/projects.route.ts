@@ -12,20 +12,20 @@ router.get(
     try {
       const projects = await prisma.projects.findMany({
         include: {
-          translations: true, // <--- هامة جداً عشان يجيب الترجمات للثلاث لغات
+          translations: true,
         },
         orderBy: { createdAt: "desc" },
       });
 
       const formattedProjects = projects.map(formatProject);
 
-      res.status(200).json({
+      return res.status(200).json({
         success: true,
         data: formattedProjects,
       });
     } catch (error) {
-      console.error("Error fetching projects:", error);
-      res.status(500).json({ success: false, message: "Server error" });
+      // console.error("Error fetching projects:", error);
+      return res.status(500).json({ success: false, message: "Server error" });
     }
   },
 );
@@ -37,7 +37,7 @@ router.get(
     try {
       const { slug } = req.params;
 
-      if (typeof slug !== "string") {
+      if (!slug || typeof slug !== "string") {
         return res.status(400).json({
           success: false,
           message: "Invalid slug parameter",
@@ -45,10 +45,10 @@ router.get(
       }
 
       const project = await prisma.projects.findUnique({
+        where: { slug },
         include: {
           translations: true,
         },
-        where: { slug },
       });
 
       if (!project) {
@@ -58,13 +58,13 @@ router.get(
         });
       }
 
-      res.status(200).json({
+      return res.status(200).json({
         success: true,
         data: formatProject(project),
       });
     } catch (error) {
-      console.error("Error fetching project:", error);
-      res.status(500).json({ success: false, message: "Server error" });
+      // console.error("Error fetching project:", error);
+      return res.status(500).json({ success: false, message: "Server error" });
     }
   },
 );
