@@ -14,10 +14,10 @@ router.post(
     res: Response<ApiResponse<null>>,
   ) => {
     try {
-      const { name, email, message, token } = req.body;
+      const { name, email, phone, message, token } = req.body;
 
       // 1. Simple Validation of Required Fields
-      if (!name || !email || !message || !token) {
+      if (!name || !email || !phone || !message || !token) {
         return res.status(400).json({
           success: false,
           message: "requiredFields",
@@ -33,7 +33,18 @@ router.post(
         });
       }
 
-      // 3. check reCAPTCHA
+      // 3. Sanitize input (remove spaces, hyphens, parentheses) and Validate clean string
+      const cleanPhone = phone.replace(/[\s\-\(\)]/g, "");
+      const phoneRegex = /^(\+?[1-9]\d{6,14}|0\d{8,10})$/;
+
+      if (!phoneRegex.test(cleanPhone)) {
+        return res.status(400).json({
+          success: false,
+          message: "phoneInvalid",
+        });
+      }
+
+      // 4. check reCAPTCHA
       const secretKey = process.env.RECAPTCHA_SECRET_KEY;
       const verifyRes = await fetch(
         `https://www.google.com/recaptcha/api/siteverify?secret=${secretKey}&response=${token}`,
@@ -47,11 +58,12 @@ router.post(
           .json({ success: false, message: "recaptchaFailed" });
       }
 
-      // 4. Save Contact Message to Database
+      // 4. Save Contact Message to Database (including phone)
       await prisma.contactMessage.create({
         data: {
           name,
           email,
+          phone: cleanPhone,
           message,
         },
       });
