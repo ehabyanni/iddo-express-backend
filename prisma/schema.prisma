@@ -36,50 +36,49 @@ model ProjectTranslation {
   desc      String
   content   String
 
-  project   Projects @relation(fields: [projectId], references: [id], onDelete: Cascade)
-  language  Language @relation(fields: [locale], references: [code], onDelete: Cascade)
+  project  Projects @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  language Language @relation(fields: [locale], references: [code], onDelete: Cascade)
 
   @@unique([projectId, locale])
 }
 
 model News {
-  id        Int      @id @default(autoincrement())
-  image     String
-  slug      String   @unique
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id           Int               @id @default(autoincrement())
+  image        String
+  slug         String            @unique
+  createdAt    DateTime          @default(now())
+  updatedAt    DateTime          @updatedAt
   translations NewsTranslation[]
 }
 
 model NewsTranslation {
-  id        Int      @id @default(autoincrement())
-  newsId    Int
-  locale    String
-  title     String
-  desc      String
-  content   String
+  id      Int    @id @default(autoincrement())
+  newsId  Int
+  locale  String
+  title   String
+  desc    String
+  content String
 
-  news   News @relation(fields: [newsId], references: [id], onDelete: Cascade)
-  language  Language @relation(fields: [locale], references: [code], onDelete: Cascade)
+  news     News     @relation(fields: [newsId], references: [id], onDelete: Cascade)
+  language Language @relation(fields: [locale], references: [code], onDelete: Cascade)
 
   @@unique([newsId, locale])
 }
 
-
 model ImageAccordion {
-  id            Int      @id @default(autoincrement())
-  url           String
-  title         String
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
+  id        Int      @id @default(autoincrement())
+  url       String
+  title     String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model Partners {
-  id            Int      @id @default(autoincrement())
-  name          String
-  logo          String
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
+  id        Int      @id @default(autoincrement())
+  name      String
+  logo      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model ContactMessage {
@@ -94,6 +93,8 @@ enum AboutType {
   WHO_WE_ARE
   MISSION
   VISION
+  OUR_VALUE
+  STRATEGY
 }
 
 model AboutItem {
@@ -110,8 +111,8 @@ model AboutItemTranslation {
   locale      String
   content     String    @db.Text
 
-  aboutItem   AboutItem @relation(fields: [aboutItemId], references: [id], onDelete: Cascade)
-  language  Language @relation(fields: [locale], references: [code], onDelete: Cascade)
+  aboutItem AboutItem @relation(fields: [aboutItemId], references: [id], onDelete: Cascade)
+  language  Language  @relation(fields: [locale], references: [code], onDelete: Cascade)
 
   @@unique([aboutItemId, locale])
 }
